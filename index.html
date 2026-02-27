@@ -15,20 +15,16 @@
   --accent3: #7b61ff;
   --text: #e8f0fe;
   --muted: #6b7a99;
-  --glow: 0 0 60px rgba(0,245,160,0.12);
 }
 
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 html { scroll-behavior:smooth; }
 body { background:var(--bg); color:var(--text); font-family:'Syne',sans-serif; overflow-x:hidden; }
 
-/* ── CANVAS BACKGROUND ── */
+/* CANVAS */
 #bgCanvas { position:fixed; inset:0; z-index:0; pointer-events:none; }
-
-/* ── BITCOIN FLOATING LAYER ── */
 #btcCanvas { position:fixed; inset:0; z-index:1; pointer-events:none; }
 
-/* ── NEBULA ── */
 .nebula {
   position:fixed; inset:0; z-index:0; pointer-events:none;
   background:
@@ -37,99 +33,94 @@ body { background:var(--bg); color:var(--text); font-family:'Syne',sans-serif; o
     radial-gradient(ellipse 40% 60% at 50% 50%, rgba(123,97,255,0.03) 0%, transparent 70%);
 }
 
-/* ── NAV ── */
+/* NAV */
 nav {
-  position:fixed; top:0; left:0; right:0; z-index:100;
+  position:fixed; top:0; left:0; right:0; z-index:1000;
   padding:16px 40px; display:flex; justify-content:space-between; align-items:center;
-  backdrop-filter:blur(24px);
-  background:rgba(3,6,15,0.8);
+  backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px);
+  background:rgba(3,6,15,0.85);
   border-bottom:1px solid var(--border);
 }
 .logo { font-family:'Space Mono',monospace; font-size:1rem; font-weight:700; color:var(--accent); display:flex; align-items:center; gap:8px; }
-.logo-icon { font-size:1.1rem; animation:spin 8s linear infinite; display:inline-block; }
+.logo-icon { display:inline-block; animation:spin 8s linear infinite; }
 @keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
 .nav-links { display:flex; gap:28px; list-style:none; }
 .nav-links a { color:var(--muted); text-decoration:none; font-size:0.78rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; transition:color 0.3s; }
 .nav-links a:hover { color:var(--accent); }
 
-/* ── HERO ── */
+/* ALL CONTENT sits above canvas */
+.content { position:relative; z-index:10; }
+
+/* HERO */
 .hero {
-  position:relative; z-index:2;
   min-height:100vh; display:flex; flex-direction:column; justify-content:center;
   padding:140px 40px 80px; max-width:1100px; margin:0 auto;
 }
 
 .hero-badge {
   display:inline-flex; align-items:center; gap:8px;
-  background:rgba(0,245,160,0.07); border:1px solid rgba(0,245,160,0.18);
+  background:rgba(0,245,160,0.07); border:1px solid rgba(0,245,160,0.2);
   color:var(--accent); padding:6px 16px; border-radius:100px;
   font-size:0.72rem; font-family:'Space Mono',monospace; letter-spacing:0.07em;
   margin-bottom:32px; width:fit-content;
 }
-.hero-badge::before { content:''; width:7px; height:7px; background:var(--accent); border-radius:50%; animation:pulse 2s infinite; flex-shrink:0; }
+.hero-badge .dot { width:7px; height:7px; background:var(--accent); border-radius:50%; animation:pulse 2s infinite; flex-shrink:0; display:inline-block; }
 @keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(0,245,160,0.5)} 50%{box-shadow:0 0 0 8px rgba(0,245,160,0)} }
 
 .hero h1 { font-size:clamp(2.6rem,6vw,5.5rem); font-weight:800; line-height:1.02; letter-spacing:-0.03em; margin-bottom:22px; }
-.hero h1 .line { display:block; overflow:hidden; }
-.hero h1 .line span { display:block; animation:slideUp 0.8s cubic-bezier(0.16,1,0.3,1) both; }
-.hero h1 .line:nth-child(2) span { animation-delay:0.1s; }
 .hero h1 .highlight { color:transparent; -webkit-text-stroke:2px var(--accent); }
-@keyframes slideUp { from{transform:translateY(100%);opacity:0} to{transform:translateY(0);opacity:1} }
-@keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
 
-.hero-desc { max-width:460px; color:var(--muted); font-size:0.95rem; line-height:1.75; margin-bottom:36px; animation:fadeUp 1s 0.4s both; }
-.hero-ctas { display:flex; gap:12px; flex-wrap:wrap; animation:fadeUp 1s 0.6s both; }
+.hero-desc { max-width:460px; color:var(--muted); font-size:0.95rem; line-height:1.75; margin-bottom:36px; }
+.hero-ctas { display:flex; gap:12px; flex-wrap:wrap; }
 
 .btn-primary { display:inline-flex; align-items:center; gap:8px; background:var(--accent); color:#03060f; padding:13px 28px; border-radius:8px; font-weight:700; font-size:0.87rem; text-decoration:none; transition:all 0.3s; border:none; font-family:'Syne',sans-serif; box-shadow:0 0 30px rgba(0,245,160,0.25); }
-.btn-primary:hover { transform:translateY(-2px); box-shadow:0 0 50px rgba(0,245,160,0.45); }
+.btn-primary:hover { transform:translateY(-2px); box-shadow:0 0 50px rgba(0,245,160,0.5); }
 .btn-secondary { display:inline-flex; align-items:center; gap:8px; border:1px solid rgba(0,245,160,0.25); color:var(--accent); padding:13px 28px; border-radius:8px; font-weight:600; font-size:0.87rem; text-decoration:none; transition:all 0.3s; background:rgba(0,245,160,0.04); }
-.btn-secondary:hover { background:rgba(0,245,160,0.1); transform:translateY(-2px); }
+.btn-secondary:hover { background:rgba(0,245,160,0.12); transform:translateY(-2px); }
 
-.stats-bar { display:flex; gap:36px; flex-wrap:wrap; row-gap:20px; margin-top:56px; padding-top:40px; border-top:1px solid var(--border); animation:fadeUp 1s 0.8s both; }
+.stats-bar { display:flex; gap:36px; flex-wrap:wrap; row-gap:20px; margin-top:56px; padding-top:40px; border-top:1px solid var(--border); }
 .stat-number { font-size:2rem; font-weight:800; color:var(--accent); font-family:'Space Mono',monospace; line-height:1; }
 .stat-label { font-size:0.67rem; color:var(--muted); margin-top:5px; letter-spacing:0.06em; text-transform:uppercase; max-width:110px; line-height:1.4; }
 
-/* ── TICKER ── */
-.ticker-wrap { position:relative; z-index:2; background:rgba(0,245,160,0.03); border-top:1px solid var(--border); border-bottom:1px solid var(--border); overflow:hidden; padding:12px 0; }
-.ticker { display:flex; animation:ticker 28s linear infinite; width:max-content; }
+/* TICKER */
+.ticker-wrap { position:relative; z-index:10; background:rgba(0,245,160,0.03); border-top:1px solid var(--border); border-bottom:1px solid var(--border); overflow:hidden; padding:12px 0; }
+.ticker-inner { display:flex; animation:ticker 28s linear infinite; width:max-content; }
 @keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
 .ticker-item { display:flex; align-items:center; gap:12px; padding:0 32px; font-family:'Space Mono',monospace; font-size:0.73rem; color:var(--muted); white-space:nowrap; }
 .ticker-item span { color:var(--accent); }
 
-/* ── SECTIONS ── */
-.section { position:relative; z-index:2; padding:80px 40px; max-width:1100px; margin:0 auto; }
+/* SECTIONS */
+.section { position:relative; z-index:10; padding:80px 40px; max-width:1100px; margin:0 auto; }
 .section-label { font-family:'Space Mono',monospace; font-size:0.7rem; color:var(--accent2); letter-spacing:0.16em; text-transform:uppercase; margin-bottom:12px; display:flex; align-items:center; gap:10px; }
 .section-label::before { content:''; width:22px; height:1px; background:var(--accent2); }
 .section-title { font-size:clamp(1.9rem,4vw,3rem); font-weight:800; letter-spacing:-0.03em; line-height:1.05; margin-bottom:16px; }
 .section-sub { color:var(--muted); font-size:0.9rem; line-height:1.7; margin-bottom:48px; max-width:500px; }
 
-/* ── FEATURE CARDS ── */
+/* FEATURE CARDS */
 .features-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px; }
-.feat-card { background:var(--card); border:1px solid var(--border); border-radius:20px; padding:32px; position:relative; overflow:hidden; transition:all 0.4s cubic-bezier(0.16,1,0.3,1); }
-.feat-card::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 80% 60% at 50% -10%, rgba(0,245,160,0.07), transparent 70%); opacity:0; transition:opacity 0.4s; }
-.feat-card:hover { border-color:rgba(0,245,160,0.25); transform:translateY(-4px); box-shadow:0 20px 60px rgba(0,0,0,0.4),var(--glow); }
-.feat-card:hover::before { opacity:1; }
+.feat-card { background:var(--card); border:1px solid var(--border); border-radius:20px; padding:32px; transition:all 0.4s; }
+.feat-card:hover { border-color:rgba(0,245,160,0.3); transform:translateY(-4px); box-shadow:0 20px 60px rgba(0,0,0,0.5); }
 .feat-icon { width:52px; height:52px; background:rgba(0,245,160,0.08); border:1px solid rgba(0,245,160,0.15); border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:1.5rem; margin-bottom:20px; }
 .feat-title { font-size:1.15rem; font-weight:800; margin-bottom:10px; }
 .feat-desc { color:var(--muted); font-size:0.87rem; line-height:1.72; }
 
-/* ── EXPERIENCE ── */
+/* EXPERIENCE */
 .exp-list { display:flex; flex-direction:column; gap:14px; }
-.exp-card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:28px 32px; display:flex; gap:20px; align-items:flex-start; position:relative; overflow:hidden; transition:all 0.35s cubic-bezier(0.16,1,0.3,1); }
-.exp-card::after { content:''; position:absolute; left:0; top:0; bottom:0; width:3px; background:linear-gradient(to bottom,var(--accent),var(--accent2)); transform:scaleY(0); transform-origin:bottom; transition:transform 0.4s cubic-bezier(0.16,1,0.3,1); }
-.exp-card:hover { border-color:rgba(0,245,160,0.2); transform:translateX(5px); box-shadow:var(--glow); }
+.exp-card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:28px 32px; display:flex; gap:20px; align-items:flex-start; position:relative; overflow:hidden; transition:all 0.3s; }
+.exp-card::after { content:''; position:absolute; left:0; top:0; bottom:0; width:3px; background:linear-gradient(to bottom,var(--accent),var(--accent2)); transform:scaleY(0); transform-origin:bottom; transition:transform 0.4s; border-radius:0 2px 2px 0; }
+.exp-card:hover { border-color:rgba(0,245,160,0.2); transform:translateX(5px); }
 .exp-card:hover::after { transform:scaleY(1); }
 .exp-logo { width:46px; height:46px; border-radius:12px; flex-shrink:0; background:rgba(0,245,160,0.07); border:1px solid rgba(0,245,160,0.12); display:flex; align-items:center; justify-content:center; color:var(--accent); font-size:0.65rem; font-family:'Space Mono',monospace; font-weight:700; text-align:center; }
 .exp-body { flex:1; min-width:0; }
 .exp-head { display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:8px; margin-bottom:3px; }
-.exp-company { font-size:1.1rem; font-weight:800; letter-spacing:-0.01em; }
+.exp-company { font-size:1.1rem; font-weight:800; }
 .exp-period { font-family:'Space Mono',monospace; font-size:0.68rem; color:var(--muted); white-space:nowrap; padding-top:3px; }
 .exp-role { font-size:0.75rem; color:var(--accent); font-family:'Space Mono',monospace; margin-bottom:10px; }
 .exp-desc { color:var(--muted); font-size:0.85rem; line-height:1.68; }
 .exp-tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; }
 .tag { background:rgba(0,245,160,0.05); border:1px solid rgba(0,245,160,0.14); color:var(--accent); padding:3px 10px; border-radius:100px; font-size:0.68rem; font-family:'Space Mono',monospace; }
 
-/* ── ABOUT ── */
+/* ABOUT */
 .about-grid { display:grid; grid-template-columns:1.2fr 1fr; gap:48px; align-items:start; }
 .about-text p { color:var(--muted); font-size:0.93rem; line-height:1.82; margin-bottom:18px; }
 .about-text p strong { color:var(--text); }
@@ -141,11 +132,11 @@ nav {
 .info-key { color:var(--muted); flex-shrink:0; }
 .info-val { color:var(--accent); font-family:'Space Mono',monospace; font-size:0.76rem; text-align:right; }
 
-/* ── CONTACT ── */
+/* CONTACT */
 .contact-grid { display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:start; }
 .contact-links { display:flex; flex-direction:column; gap:10px; }
 .contact-link { display:flex; align-items:center; gap:14px; padding:16px 20px; background:var(--card); border:1px solid var(--border); border-radius:14px; text-decoration:none; color:var(--text); transition:all 0.3s; }
-.contact-link:hover { border-color:rgba(0,245,160,0.25); color:var(--accent); transform:translateX(5px); box-shadow:var(--glow); }
+.contact-link:hover { border-color:rgba(0,245,160,0.3); color:var(--accent); transform:translateX(5px); }
 .cl-icon { width:38px; height:38px; background:rgba(0,245,160,0.07); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0; }
 .cl-info { flex:1; min-width:0; }
 .cl-label { font-size:0.64rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:2px; }
@@ -156,33 +147,31 @@ nav {
 .form-card .sub { color:var(--muted); font-size:0.82rem; margin-bottom:24px; line-height:1.6; }
 .form-group { margin-bottom:16px; }
 .form-group label { display:block; font-size:0.68rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:7px; font-family:'Space Mono',monospace; }
-.form-group input,.form-group textarea { width:100%; background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:10px; padding:12px 14px; color:var(--text); font-family:'Syne',sans-serif; font-size:0.87rem; transition:border-color 0.3s; outline:none; }
-.form-group input:focus,.form-group textarea:focus { border-color:rgba(0,245,160,0.4); box-shadow:0 0 0 3px rgba(0,245,160,0.06); }
+.form-group input, .form-group textarea { width:100%; background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:10px; padding:12px 14px; color:var(--text); font-family:'Syne',sans-serif; font-size:0.87rem; outline:none; transition:border-color 0.3s; }
+.form-group input:focus, .form-group textarea:focus { border-color:rgba(0,245,160,0.4); }
 .form-group textarea { resize:vertical; min-height:108px; }
-.form-group input::placeholder,.form-group textarea::placeholder { color:var(--muted); opacity:0.5; }
+.form-group input::placeholder, .form-group textarea::placeholder { color:var(--muted); opacity:0.5; }
 .success-msg { display:none; background:rgba(0,245,160,0.07); border:1px solid rgba(0,245,160,0.25); border-radius:12px; padding:22px; text-align:center; color:var(--accent); font-family:'Space Mono',monospace; font-size:0.82rem; line-height:1.8; }
 
-/* ── FOOTER ── */
-footer { position:relative; z-index:2; padding:32px 40px; border-top:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; max-width:1100px; margin:0 auto; flex-wrap:wrap; gap:12px; }
+/* FOOTER */
+footer { position:relative; z-index:10; padding:32px 40px; border-top:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; max-width:1100px; margin:0 auto; flex-wrap:wrap; gap:12px; }
 footer p { color:var(--muted); font-size:0.76rem; font-family:'Space Mono',monospace; }
 .fa { color:var(--accent); }
 
-/* ── REVEAL ── */
-.reveal { opacity:0; transform:translateY(22px); transition:all 0.65s cubic-bezier(0.16,1,0.3,1); }
-.reveal.visible { opacity:1; transform:translateY(0); }
-
-/* ── MOBILE ── */
+/* MOBILE */
 @media (max-width:768px) {
-  nav { padding:14px 20px; } .nav-links { display:none; }
+  nav { padding:14px 20px; }
+  .nav-links { display:none; }
   .hero { padding:110px 20px 60px; }
   .hero h1 { font-size:2.4rem; }
   .hero h1 .highlight { -webkit-text-stroke:1.5px var(--accent); }
   .section { padding:60px 20px; }
   .stats-bar { gap:20px; margin-top:36px; padding-top:28px; }
   .stat-number { font-size:1.7rem; }
-  .about-grid,.contact-grid { grid-template-columns:1fr; }
+  .about-grid, .contact-grid { grid-template-columns:1fr; }
   .exp-card { flex-direction:column; gap:14px; }
   .exp-head { flex-direction:column; gap:2px; }
+  .exp-period { text-align:left; }
   footer { padding:24px 20px; flex-direction:column; text-align:center; }
 }
 @media (max-width:480px) {
@@ -194,9 +183,13 @@ footer p { color:var(--muted); font-size:0.76rem; font-family:'Space Mono',monos
 </head>
 <body>
 
+<!-- CANVAS BACKGROUNDS -->
 <canvas id="bgCanvas"></canvas>
 <canvas id="btcCanvas"></canvas>
 <div class="nebula"></div>
+
+<!-- ALL CONTENT WRAPPER -->
+<div class="content">
 
 <!-- NAV -->
 <nav>
@@ -211,10 +204,10 @@ footer p { color:var(--muted); font-size:0.76rem; font-family:'Space Mono',monos
 
 <!-- HERO -->
 <div class="hero">
-  <div class="hero-badge">₿ Available for Web3 Opportunities</div>
+  <div class="hero-badge"><span class="dot"></span> Available for Web3 Opportunities</div>
   <h1>
-    <span class="line"><span>MD Aslam</span></span>
-    <span class="line"><span class="highlight">Web3 Builder</span></span>
+    MD Aslam<br>
+    <span class="highlight">Web3 Builder</span>
   </h1>
   <p class="hero-desc">6+ years launching blockchain projects to new highs across South Asia. Expert in BD, KOL partnerships, community management, and exchange listings.</p>
   <div class="hero-ctas">
@@ -228,22 +221,23 @@ footer p { color:var(--muted); font-size:0.76rem; font-family:'Space Mono',monos
     </a>
   </div>
   <div class="stats-bar">
-    <div class="stat-item"><div class="stat-number">6+</div><div class="stat-label">Years in Web3</div></div>
-    <div class="stat-item"><div class="stat-number">10+</div><div class="stat-label">Projects Grown</div></div>
-    <div class="stat-item"><div class="stat-number">180K+</div><div class="stat-label">Active Telegram Members</div></div>
-    <div class="stat-item"><div class="stat-number">1500+</div><div class="stat-label">KOL Connections</div></div>
-    <div class="stat-item"><div class="stat-number">80%</div><div class="stat-label">Follower Growth</div></div>
+    <div><div class="stat-number">6+</div><div class="stat-label">Years in Web3</div></div>
+    <div><div class="stat-number">10+</div><div class="stat-label">Projects Grown</div></div>
+    <div><div class="stat-number">180K+</div><div class="stat-label">Active Telegram Members</div></div>
+    <div><div class="stat-number">1500+</div><div class="stat-label">KOL Connections</div></div>
+    <div><div class="stat-number">80%</div><div class="stat-label">Follower Growth</div></div>
   </div>
 </div>
 
 <!-- TICKER -->
 <div class="ticker-wrap">
-  <div class="ticker">
+  <div class="ticker-inner">
     <div class="ticker-item">₿ <span>MomoAI</span> Solana #1 Gaming DApp ★</div>
     <div class="ticker-item">₿ <span>MEXC</span> BD Manager ★</div>
     <div class="ticker-item">₿ <span>Hotcoin</span> BD Manager ★</div>
     <div class="ticker-item">₿ <span>Coincatch</span> BD Manager ★</div>
     <div class="ticker-item">₿ <span>CEX.io</span> Community Moderator ★</div>
+    <div class="ticker-item">₿ <span>Piggy Land</span> CM & BD ★</div>
     <div class="ticker-item">₿ <span>1500+</span> KOL Connections ★</div>
     <div class="ticker-item">₿ <span>180K+</span> Telegram Members ★</div>
     <div class="ticker-item">₿ <span>MomoAI</span> Solana #1 Gaming DApp ★</div>
@@ -251,6 +245,7 @@ footer p { color:var(--muted); font-size:0.76rem; font-family:'Space Mono',monos
     <div class="ticker-item">₿ <span>Hotcoin</span> BD Manager ★</div>
     <div class="ticker-item">₿ <span>Coincatch</span> BD Manager ★</div>
     <div class="ticker-item">₿ <span>CEX.io</span> Community Moderator ★</div>
+    <div class="ticker-item">₿ <span>Piggy Land</span> CM & BD ★</div>
     <div class="ticker-item">₿ <span>1500+</span> KOL Connections ★</div>
     <div class="ticker-item">₿ <span>180K+</span> Telegram Members ★</div>
   </div>
@@ -259,22 +254,39 @@ footer p { color:var(--muted); font-size:0.76rem; font-family:'Space Mono',monos
 <!-- SKILLS -->
 <div class="section" id="skills">
   <div class="section-label">What I Do</div>
-  <div class="section-title reveal">Four ways I grow<br>your Web3 project</div>
-  <p class="section-sub reveal">From community building to exchange listings — I cover every angle of Web3 growth.</p>
+  <div class="section-title">Four ways I grow<br>your Web3 project</div>
+  <p class="section-sub">From community building to exchange listings — I cover every angle of Web3 growth.</p>
   <div class="features-grid">
-    <div class="feat-card reveal"><div class="feat-icon">🤝</div><div class="feat-title">Business Development</div><div class="feat-desc">Strategic partnerships, ecosystem collaborations, and exchange listings on BingX, MEXC, Gate.io, and Bitget. Full CRM pipeline management.</div></div>
-    <div class="feat-card reveal"><div class="feat-icon">📣</div><div class="feat-title">KOL & Influencer Network</div><div class="feat-desc">Direct access to 1500+ Key Opinion Leaders across South Asia. Campaign strategy, onboarding, and performance tracking.</div></div>
-    <div class="feat-card reveal"><div class="feat-icon">🌐</div><div class="feat-title">Community Management</div><div class="feat-desc">Successfully managed 180K+ active Telegram members. AMAs, events, giveaways, and moderation across Discord and Twitter.</div></div>
-    <div class="feat-card reveal"><div class="feat-icon">⛓️</div><div class="feat-title">Deep Blockchain Expertise</div><div class="feat-desc">NFTs, P2E gaming, DApps, DeFi, Web3 ecosystems. Token listing processes. B.Tech CSE from NIT Nagpur for technical depth.</div></div>
-    <div class="feat-card reveal"><div class="feat-icon">🌍</div><div class="feat-title">South Asia Market Access</div><div class="feat-desc">Unmatched regional reach across India, Pakistan & surroundings. Trilingual (EN/HI/UR) with deep cultural market knowledge.</div></div>
-    <div class="feat-card reveal"><div class="feat-icon">📊</div><div class="feat-title">Growth & Content Strategy</div><div class="feat-desc">User acquisition, influencer campaigns, content creation (reels, threads, infographics) that drove 80%+ follower growth.</div></div>
+    <div class="feat-card"><div class="feat-icon">🤝</div><div class="feat-title">Business Development</div><div class="feat-desc">Strategic partnerships, ecosystem collaborations, and exchange listings on BingX, MEXC, Gate.io, and Bitget. Full CRM pipeline management.</div></div>
+    <div class="feat-card"><div class="feat-icon">📣</div><div class="feat-title">KOL & Influencer Network</div><div class="feat-desc">Direct access to 1500+ Key Opinion Leaders across South Asia. Campaign strategy, onboarding, and performance tracking.</div></div>
+    <div class="feat-card"><div class="feat-icon">🌐</div><div class="feat-title">Community Management</div><div class="feat-desc">Successfully managed 180K+ active Telegram members. AMAs, events, giveaways, and moderation across Discord and Twitter.</div></div>
+    <div class="feat-card"><div class="feat-icon">⛓️</div><div class="feat-title">Deep Blockchain Expertise</div><div class="feat-desc">NFTs, P2E gaming, DApps, DeFi, Web3 ecosystems. Token listing processes. B.Tech CSE from NIT Nagpur for technical depth.</div></div>
+    <div class="feat-card"><div class="feat-icon">🌍</div><div class="feat-title">South Asia Market Access</div><div class="feat-desc">Unmatched regional reach across India, Pakistan & surroundings. Trilingual (EN/HI/UR) with deep cultural market knowledge.</div></div>
+    <div class="feat-card"><div class="feat-icon">📊</div><div class="feat-title">Growth & Content Strategy</div><div class="feat-desc">User acquisition, influencer campaigns, content creation that drove 80%+ follower growth.</div></div>
   </div>
 </div>
 
 <!-- EXPERIENCE -->
 <div class="section" id="experience">
   <div class="section-label">Career</div>
-  <div class="section-title reveal">Experience</div>
-  <p class="section-sub reveal">Projects I've launched, exchanges I've grown, communities I've built.</p>
+  <div class="section-title">Experience</div>
+  <p class="section-sub">Projects I've launched, exchanges I've grown, communities I've built.</p>
   <div class="exp-list">
-    <div class="exp-card reveal"><div class="exp-logo">MoAI</div><div
+
+    <div class="exp-card">
+      <div class="exp-logo">MoAI</div>
+      <div class="exp-body">
+        <div class="exp-head"><div class="exp-company">MomoAI</div><div class="exp-period">Apr 2024 – Sep 2025</div></div>
+        <div class="exp-role">Regional Community Manager & BD</div>
+        <div class="exp-desc">Solana's #1 gaming DApp — listed on Bitget, Gate, KuCoin. Led KOL campaigns for momoX launch, driving massive engagement across Indian Web3 and gaming communities.</div>
+        <div class="exp-tags"><span class="tag">Solana</span><span class="tag">KOL</span><span class="tag">Gaming</span><span class="tag">Community</span></div>
+      </div>
+    </div>
+
+    <div class="exp-card">
+      <div class="exp-logo">MEX</div>
+      <div class="exp-body">
+        <div class="exp-head"><div class="exp-company">MEXC Exchange</div><div class="exp-period">May – Jul 2025</div></div>
+        <div class="exp-role">Business Development Manager</div>
+        <div class="exp-desc">Drove user growth across South Asia. Built KOL partnerships, coordinated AMAs, maintained CRM pipelines for listings and follow-ups.</div>
+        <div class="exp-tags"><span class="tag">BD</span><span class="tag">South Asia</span><span class="tag">CRM</span><span c
