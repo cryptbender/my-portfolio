@@ -54,7 +54,7 @@ nav {
 /* HERO */
 .hero {
   min-height:100vh; display:flex; flex-direction:column; justify-content:center;
-  padding:140px 40px 80px; max-width:1100px; margin:0 auto;
+  padding:90px 40px 60px; max-width:1100px; margin:0 auto;
 }
 
 .hero-badge {
@@ -73,8 +73,75 @@ nav {
 .hero-desc { max-width:460px; color:var(--muted); font-size:0.95rem; line-height:1.75; margin-bottom:36px; }
 .hero-ctas { display:flex; gap:12px; flex-wrap:wrap; }
 
-.btn-primary { display:inline-flex; align-items:center; gap:8px; background:var(--accent); color:#03060f; padding:13px 28px; border-radius:8px; font-weight:700; font-size:0.87rem; text-decoration:none; transition:all 0.3s; border:none; font-family:'Syne',sans-serif; box-shadow:0 0 30px rgba(0,245,160,0.25); }
-.btn-primary:hover { transform:translateY(-2px); box-shadow:0 0 50px rgba(0,245,160,0.5); }
+.btn-primary-wrap {
+  position: relative;
+  display: inline-block;
+  border-radius: 8px;
+  padding: 3px;
+  background: transparent;
+  text-decoration: none;
+}
+.btn-primary-wrap::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 10px;
+  padding: 2px;
+  background: conic-gradient(
+    from var(--angle, 0deg),
+    #00f5a0,
+    #00c8ff,
+    #7b61ff,
+    #ff6b35,
+    #ffcc00,
+    #ff3cac,
+    #00f5a0
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: borderRotate 2s linear infinite;
+  filter: blur(1px);
+}
+.btn-primary-wrap::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 12px;
+  background: conic-gradient(
+    from var(--angle, 0deg),
+    rgba(0,245,160,0.4),
+    rgba(0,200,255,0.3),
+    rgba(123,97,255,0.4),
+    rgba(255,107,53,0.3),
+    rgba(255,204,0,0.4),
+    rgba(255,60,172,0.3),
+    rgba(0,245,160,0.4)
+  );
+  filter: blur(8px);
+  opacity: 0.7;
+  animation: borderRotate 2s linear infinite;
+  z-index: -1;
+}
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes borderRotate {
+  to { --angle: 360deg; }
+}
+.btn-primary {
+  display:inline-flex; align-items:center; gap:8px;
+  background:var(--accent); color:#03060f;
+  padding:13px 28px; border-radius:8px;
+  font-weight:700; font-size:0.87rem;
+  text-decoration:none; transition:all 0.3s;
+  border:none; font-family:'Syne',sans-serif;
+  position: relative; z-index: 1;
+  white-space: nowrap;
+}
+.btn-primary:hover { transform:translateY(-2px); filter: brightness(1.1); }
 .btn-secondary { display:inline-flex; align-items:center; gap:8px; border:1px solid rgba(0,245,160,0.25); color:var(--accent); padding:13px 28px; border-radius:8px; font-weight:600; font-size:0.87rem; text-decoration:none; transition:all 0.3s; background:rgba(0,245,160,0.04); }
 .btn-secondary:hover { background:rgba(0,245,160,0.12); transform:translateY(-2px); }
 
@@ -162,7 +229,7 @@ footer p { color:var(--muted); font-size:0.76rem; font-family:'Space Mono',monos
 @media (max-width:768px) {
   nav { padding:14px 20px; }
   .nav-links { display:none; }
-  .hero { padding:110px 20px 60px; }
+  .hero { padding:80px 20px 50px; }
   .hero h1 { font-size:2.4rem; }
   .hero h1 .highlight { -webkit-text-stroke:1.5px var(--accent); }
   .section { padding:60px 20px; }
@@ -211,10 +278,12 @@ footer p { color:var(--muted); font-size:0.76rem; font-family:'Space Mono',monos
   </h1>
   <p class="hero-desc">6+ years launching blockchain projects to new highs across South Asia. Expert in BD, KOL partnerships, community management, and exchange listings.</p>
   <div class="hero-ctas">
-    <a href="https://t.me/crypbender" target="_blank" class="btn-primary">
-      <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
-      Let's Talk
-    </a>
+    <div class="btn-primary-wrap">
+      <a href="https://t.me/crypbender" target="_blank" class="btn-primary">
+        <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+        Let's Talk
+      </a>
+    </div>
     <a href="https://drive.google.com/uc?export=download&id=1YLiPiNb8oFMSt2mbbXCRxd38KWbjw4UC" target="_blank" class="btn-secondary">
       <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
       Download CV
@@ -389,7 +458,7 @@ footer p { color:var(--muted); font-size:0.76rem; font-family:'Space Mono',monos
   <div class="contact-grid">
     <div>
       <div class="contact-links">
-        <a href="mailto:cryptobenderct@gmail.com" class="contact-link"><div class="cl-icon">✉️</div><div class="cl-info"><div class="cl-label">Email</div><div class="cl-value">cryptobenderct@gmail.com</div></div><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></a>
+        <a href="/cdn-cgi/l/email-protection#a4c7d6ddd4d0cbc6c1cac0c1d6c7d0e4c3c9c5cdc88ac7cbc9" class="contact-link"><div class="cl-icon">✉️</div><div class="cl-info"><div class="cl-label">Email</div><div class="cl-value"><span class="__cf_email__" data-cfemail="b1d2c3c8c1c5ded3d4dfd5d4c3d2c5f1d6dcd0d8dd9fd2dedc">[email&#160;protected]</span></div></div><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></a>
         <a href="tel:+919709016670" class="contact-link"><div class="cl-icon">📱</div><div class="cl-info"><div class="cl-label">Phone / WhatsApp</div><div class="cl-value">+91 9709016670</div></div><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></a>
         <a href="https://t.me/crypbender" target="_blank" class="contact-link"><div class="cl-icon">💬</div><div class="cl-info"><div class="cl-label">Telegram</div><div class="cl-value">@crypbender</div></div><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></a>
         <a href="https://linkedin.com/in/relaslam" target="_blank" class="contact-link"><div class="cl-icon">💼</div><div class="cl-info"><div class="cl-label">LinkedIn</div><div class="cl-value">@relaslam</div></div><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></a>
@@ -418,7 +487,7 @@ footer p { color:var(--muted); font-size:0.76rem; font-family:'Space Mono',monos
 
 </div><!-- end .content -->
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ── STAR FIELD ──
 const bg = document.getElementById('bgCanvas');
 const bgCtx = bg.getContext('2d');
@@ -570,12 +639,4 @@ async function sendForm(e) {
     if (res.ok) {
       document.getElementById('contactForm').style.display = 'none';
       document.getElementById('successMsg').style.display = 'block';
-    } else { throw new Error(); }
-  } catch {
-    btn.textContent = 'Error — Try again'; btn.style.background = '#ef4444'; btn.disabled = false;
-    setTimeout(() => { btn.textContent = 'Send Message →'; btn.style.background = ''; }, 3000);
-  }
-}
-</script>
-</body>
-</html>
+    } else { throw new E
